@@ -98,7 +98,7 @@ Below is the tree structure for this project. The main module is redactor.py, wh
     └── test_stats.py
 ```
 
-For example, the files in the ```docs/``` folder were used to create and test the program. The input command was ```bash --input '*.txt'``` (the program was written assuming the input files would be located in the ```docs/``` folder). The output location was specified as ```otherfiles/```, resulting in the .redacted files in said folder. Additionally, ```--stats``` was flagged which resulted in the .stats files in said location, as  well.
+For example, the files in the ```docs/``` folder were used to create and test the program. The input command was ```--input '*.txt'``` (the program was written assuming the input files would be located in the ```docs/``` folder). The output location was specified as ```otherfiles/```, resulting in the .redacted files in said folder. Additionally, ```--stats``` was flagged which resulted in the .stats files in said location, as  well.
 
 ### Usage
 ------------
@@ -113,7 +113,7 @@ The command used to execute the program was:
 	--output 'otherfiles/'
 ```
 
-####Notes:
+#### Notes:
 1. Flags can be listed in any order.
 2. The only required flags are ```--input``` and ```--output```.
 3. There can be **multiple concepts**. List the flag once, followed by each desired concept to redact **separated by a whitespace**, as shown in the command above.
@@ -123,10 +123,10 @@ The command used to execute the program was:
 -------------------
 
 ### Input
-The ```bash --input '*.txt'``` command specifies the location/name/type of file to be redacted. In this program, the files to be redacted are assumed to be **only** .txt files and located in the ```docs/``` folder. If there are multiple .txt files in the location, all will be read by the glob.
+The ```--input '*.txt'``` command specifies the location/name/type of file to be redacted. In this program, the files to be redacted are assumed to be **only** .txt files and located in the ```docs/``` folder. If there are multiple .txt files in the location, all will be read by the glob.
 
 ### Output
-The ```bash --output 'otherfiles/'``` command specifies the location/name/type of the redacted file to be placed. Each file output will have the .redacted extention. Each of the .redacted files will contain the text, but redacted using the unicode full block character to cover sensitive text.
+The ```--output 'otherfiles/'``` command specifies the location/name/type of the redacted file to be placed. Each file output will have the .redacted extention. Each of the .redacted files will contain the text, but redacted using the unicode full block character to cover sensitive text.
 
 
 ## Redaction Flags
@@ -143,7 +143,8 @@ This function takes in the list of words to redact and the text, and returns the
 The ```--genders``` flag triggers the redact_gender function:
 ```python def redact_gender(contents):```
 The parameter takes in the text and returns the redacted text and the list of gender-related words redacted. The list of gender-related words decided was:
-```python genders = ['he', "hes", 'her', 'she', "shes", 'him', 'his', 'woman', 'man', 'lady', 'ladies',  'girl', 'boy', 'women', 'men', 'son', "son's", 'daughter', "daughters", 'father', "fathers", 'mother', 'sister','brother', 'herself', 'himself', "mothers", 'female', 'male']
+```python 
+genders = ['he', "hes", 'her', 'she', "shes", 'him', 'his', 'woman', 'man', 'lady', 'ladies',  'girl', 'boy', 'women', 'men', 'son', "son's", 'daughter', "daughters", 'father', "fathers", 'mother', 'sister','brother', 'herself', 'himself', "mothers", 'female', 'male']
 ```
 The text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. Each word was stripped of ascii characters so that all of the puncuation could be stripped. The word was made all lowercase using .casefold() and then was compared to each of the gendered words in the list. If it matched the word was added to the redaction list and the redact_items function was called.
 
@@ -162,7 +163,8 @@ If so, the word was added to the redaction list. Then the redat_items function w
 The ```--numbers``` flag triggers the redact_numbers function:
 ```python def redact_numbers(contents):```
 The parameter takes in the text and returns the redacted text and the list of number-related words redacted. The text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. The program ran through each word to see if it contained any words from the 'numbers' list:
-```python  numbers = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'teen', 'twenty', 'thirty', 'forty', 'fifty', 'hundred', 'thousand', 'million']
+```python  
+numbers = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'teen', 'twenty', 'thirty', 'forty', 'fifty', 'hundred', 'thousand', 'million']
 ```
 If so, the word was added to the redaction list. Then, regular expressions was used to find all of the words containing digits, and was added to the redaction list. Then the redat_items function was called.
 
@@ -212,7 +214,7 @@ The parameters are the name of the file whose stats are being processed, the out
 There are seven tests to diagnose the program, all located in the ```tests/``` folder. There is a 'test_concepts.py' to test that more than one concept can be added and that the **whole sentence** containing the synonyms will be redacted. The 'test_dates.py' checks if days of the week, years, months, and days are redacted. The 'test_genders.py' checks if any of the words are in the gender list as described earlier and redacts them. The 'test_names.py' tests that all proper nouns are redacted. The 'test_locations.py' makes sure 'GPE' spacy-tagged words are redacted. The 'test_number.py' checks that all words containing or describing digits are redacted and the 'test_stats.py' tests the output of the statistics function.
 
 Command to run pytest:
-```bash pytest -p no:warnings -s```
+```pytest -p no:warnings -s```
 
 
 #### File Sources
