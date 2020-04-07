@@ -134,14 +134,18 @@ The ```--output 'otherfiles/'``` command specifies the location/name/type of the
 
 ### Names
 The ```--names``` flag triggers the redact_names function:
-```python def redact_names(contents):```
-The parameter takes in the text and returns the redacted text, the list of names redacted, and the number of words in the document. First, the text was tokenized into sentences using the Natural Language Toolkit's (NLTK)```python nltk.sent_tokenize``` method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. Again using nltk, each word was categorized using Parts of Speech (POS) tagging. Those were that were tagged as 'NNP' (Proper nouns) were added to the redaction list. The redact_items function was then called (as it is in every function listed below):
+```python 
+def redact_names(contents):
+```
+The parameter takes in the text and returns the redacted text, the list of names redacted, and the number of words in the document. First, the text was tokenized into sentences using the Natural Language Toolkit's (NLTK)```nltk.sent_tokenize``` method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. Again using nltk, each word was categorized using Parts of Speech (POS) tagging. Those were that were tagged as 'NNP' (Proper nouns) were added to the redaction list. The redact_items function was then called (as it is in every function listed below):
 ```python def redact_items(red_list, contents):```
 This function takes in the list of words to redact and the text, and returns the text with the 'red_list' words replaced by the unicode full block character.
 
 ### Genders:
 The ```--genders``` flag triggers the redact_gender function:
-```python def redact_gender(contents):```
+```python
+def redact_gender(contents):
+```
 The parameter takes in the text and returns the redacted text and the list of gender-related words redacted. The list of gender-related words decided was:
 ```python 
 genders = ['he', "hes", 'her', 'she', "shes", 'him', 'his', 'woman', 'man', 'lady', 'ladies',  'girl', 'boy', 'women', 'men', 'son', "son's", 'daughter', "daughters", 'father', "fathers", 'mother', 'sister','brother', 'herself', 'himself', "mothers", 'female', 'male']
@@ -150,7 +154,9 @@ The text was tokenized into sentences using the NLTK sentence tokenization metho
 
 ### Dates
 The ```--dates``` flag triggers the redact_dates function:
-```python def redact_dates(contents):```
+```python 
+def redact_dates(contents):
+```
 The parameter takes in the text and returns the redacted text and the list of date-related words redacted. In my opinion, this was the most difficult function because of the punctuation and various formats of dates. I tried to redact anything that:
 * Was tagged as a date by the search_dates methods from the dateparser.search package
 * Was In the 'months' list (which helf days of the week and months)
@@ -161,7 +167,9 @@ If so, the word was added to the redaction list. Then the redat_items function w
 
 ### Numbers
 The ```--numbers``` flag triggers the redact_numbers function:
-```python def redact_numbers(contents):```
+```python
+def redact_numbers(contents):
+```
 The parameter takes in the text and returns the redacted text and the list of number-related words redacted. The text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. The program ran through each word to see if it contained any words from the 'numbers' list:
 ```python  
 numbers = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'teen', 'twenty', 'thirty', 'forty', 'fifty', 'hundred', 'thousand', 'million']
@@ -170,13 +178,17 @@ If so, the word was added to the redaction list. Then, regular expressions was u
 
 ### Locations
 The ```--locations``` flag triggers the redact_loc function:
-```python def redact_loc(contents):```
-The parameter takes in the text and returns the redacted text and the list of location-related words redacted. First, the text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. Using spacy's nlp methos, each word was categorized as a type of entity. Those were that were tagged as 'GPE' (Geopolitical entity) were added to the redaction list. The redact_items function was then called.
+```python 
+def redact_loc(contents):
+```
+The parameter takes in the text and returns the redacted text and the list of location-related words redacted. First, the text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. Using spacy's ```nlp``` package, each word was categorized as a type of entity. Those were that were tagged as 'GPE' (Geopolitical entity) were added to the redaction list. The redact_items function was then called.
 
 ### Concept
 The ```--concept`` flag triggers the redact_concepts function:
-```python def redact_concepts(contents, concepts):```
-The parameters takes in the text and list of concepts and returns the redacted text and the list of words redacted. This function cycled through each concept word and added the synonyms of each to a list using wordnet from nltk.corpus. The text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. The program ran through each word to see if it contained any words from the 'synonyms' list. If so, every word from that **sentence** was added to the redaction list. Then the redat_items function was called.
+```python 
+def redact_concepts(contents, concepts):
+```
+The parameters takes in the text and list of concepts and returns the redacted text and the list of words redacted. This function cycled through each concept word and added the synonyms of each to a list using ```wordnet``` from ```nltk.corpus```. The text was tokenized into sentences using the NLTK sentence tokenization method. Then, each sentence was further tokenized into words using the WhitespaceTokenizer. The program ran through each word to see if it contained any words from the 'synonyms' list. If so, every word from that **sentence** was added to the redaction list. Then the redat_items function was called.
 
 
 ## Stats
@@ -205,7 +217,9 @@ man, mother, she, sister,, son., boy, mother,, daughter, him,, he, his, her, her
 ```
 
 The stats flag signals the get_stats function:
-```python def get_stats(fileName, outputLoc, stats_, no_words):```
+```python 
+def get_stats(fileName, outputLoc, stats_, no_words):
+```
 The parameters are the name of the file whose stats are being processed, the output location to place the .stats file, the stats list from the main function, and the number of words (separated by whitespace) in the file.
 
 
@@ -214,7 +228,9 @@ The parameters are the name of the file whose stats are being processed, the out
 There are seven tests to diagnose the program, all located in the ```tests/``` folder. There is a 'test_concepts.py' to test that more than one concept can be added and that the **whole sentence** containing the synonyms will be redacted. The 'test_dates.py' checks if days of the week, years, months, and days are redacted. The 'test_genders.py' checks if any of the words are in the gender list as described earlier and redacts them. The 'test_names.py' tests that all proper nouns are redacted. The 'test_locations.py' makes sure 'GPE' spacy-tagged words are redacted. The 'test_number.py' checks that all words containing or describing digits are redacted and the 'test_stats.py' tests the output of the statistics function.
 
 Command to run pytest:
-```pytest -p no:warnings -s```
+```bash
+pytest -p no:warnings -s
+```
 
 
 #### File Sources
