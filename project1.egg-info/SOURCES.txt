@@ -1,0 +1,9 @@
+README.md
+setup.cfg
+setup.py
+project1/__init__.py
+project1/redactor.py
+project1.egg-info/PKG-INFO
+project1.egg-info/SOURCES.txt
+project1.egg-info/dependency_links.txt
+project1.egg-info/top_level.txt
